@@ -15,6 +15,8 @@ declare global {
       readonly CLERK_SIGN_IN_URL: string
       readonly CLERK_SIGN_UP_URL: string
       readonly DATABASE_URL: string
+      readonly CLERK_SIGN_IN_FORCE_REDIRECT_URL: string
+      readonly CLERK_SIGN_UP_FORCE_REDIRECT_URL: string
     }
   }
 }
