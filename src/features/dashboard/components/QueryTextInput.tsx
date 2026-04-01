@@ -1,6 +1,10 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
+import {
+  COST_PER_CHARACTER,
+  MAX_QUERY_LENGTH,
+} from '@/features/text-to-speech/constants'
 import { useNavigate } from '@tanstack/react-router'
 import { Coins } from 'lucide-react'
 import { useState } from 'react'
@@ -20,8 +24,6 @@ const QueryTextInput = () => {
       })
     }
   }
-
-  const MAX_QUERY_LENGTH = 5000
 
   return (
     <div className="rounded-[22px] bg-linear-185 from-[#FF8EE3] from-15% via-[#57D7E0] via-39% to-[#DBF1F2] to-85% p-0.5 shadow-[0_0_0_4px_transparent]">
@@ -43,14 +45,15 @@ const QueryTextInput = () => {
                 ) : (
                   <>
                     <span className="tabular-nums">
-                      ${(query.length * 0.0003).toFixed(4)} estimated
+                      ${(query.length * COST_PER_CHARACTER).toFixed(4)}
+                      &nbsp;estimated
                     </span>
                   </>
                 )}
               </span>
             </Badge>
             <span className="text-xs text-muted-foreground">
-              {query.length.toLocaleString()} /{' '}
+              {query.length.toLocaleString()}&nbsp;/&nbsp;
               {MAX_QUERY_LENGTH.toLocaleString()} characters
             </span>
           </div>

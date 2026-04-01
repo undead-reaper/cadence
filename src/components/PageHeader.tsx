@@ -10,7 +10,12 @@ type Props = Readonly<{
 
 const PageHeader = ({ title, className }: Props) => {
   return (
-    <div className={cn('flex items-center justify-between p-4', className)}>
+    <div
+      className={cn(
+        'flex items-center justify-between p-4 border-b',
+        className,
+      )}
+    >
       <div className="flex items-center gap-2">
         <SidebarTrigger />
         <h1 className="text-lg font-semibold tracking-tight">{title}</h1>

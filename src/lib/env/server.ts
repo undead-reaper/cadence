@@ -7,6 +7,8 @@ export const serverEnv = createEnv({
     NODE_ENV: z.enum(['development', 'production', 'test']),
     CLERK_SIGN_IN_URL: z.string(),
     CLERK_SIGN_UP_URL: z.string(),
+    CLERK_SIGN_IN_FORCE_REDIRECT_URL: z.string(),
+    CLERK_SIGN_UP_FORCE_REDIRECT_URL: z.string(),
     DATABASE_URL: z.string(),
   },
   emptyStringAsUndefined: true,
