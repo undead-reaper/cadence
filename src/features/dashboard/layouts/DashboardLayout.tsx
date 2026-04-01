@@ -4,7 +4,7 @@ import { Outlet } from '@tanstack/react-router'
 
 const DashboardLayout = () => {
   return (
-    <SidebarProvider className="h-svh">
+    <SidebarProvider>
       <DashboardSidebar />
       <SidebarInset className="min-h-0 min-w-0">
         <main className="flex flex-1 min-h-0 flex-col">

@@ -22,7 +22,7 @@ import {
   Home,
   LifeBuoy,
   MicVocal,
-  Settings
+  Settings,
 } from 'lucide-react'
 
 const DashboardSidebar = () => {

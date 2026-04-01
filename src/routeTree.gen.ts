@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as dashboardRouteRouteImport } from './routes/(dashboard)/route'
 import { Route as authRouteRouteImport } from './routes/(auth)/route'
 import { Route as dashboardIndexRouteImport } from './routes/(dashboard)/index'
+import { Route as dashboardTextToSpeechRouteImport } from './routes/(dashboard)/text-to-speech'
 import { Route as authSelectOrganizationRouteImport } from './routes/(auth)/select-organization'
 import { Route as authSignUpSplatRouteImport } from './routes/(auth)/sign-up.$'
 import { Route as authSignInSplatRouteImport } from './routes/(auth)/sign-in.$'
@@ -27,6 +28,11 @@ const authRouteRoute = authRouteRouteImport.update({
 const dashboardIndexRoute = dashboardIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => dashboardRouteRoute,
+} as any)
+const dashboardTextToSpeechRoute = dashboardTextToSpeechRouteImport.update({
+  id: '/text-to-speech',
+  path: '/text-to-speech',
   getParentRoute: () => dashboardRouteRoute,
 } as any)
 const authSelectOrganizationRoute = authSelectOrganizationRouteImport.update({
@@ -47,12 +53,14 @@ const authSignInSplatRoute = authSignInSplatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/select-organization': typeof authSelectOrganizationRoute
+  '/text-to-speech': typeof dashboardTextToSpeechRoute
   '/': typeof dashboardIndexRoute
   '/sign-in/$': typeof authSignInSplatRoute
   '/sign-up/$': typeof authSignUpSplatRoute
 }
 export interface FileRoutesByTo {
   '/select-organization': typeof authSelectOrganizationRoute
+  '/text-to-speech': typeof dashboardTextToSpeechRoute
   '/': typeof dashboardIndexRoute
   '/sign-in/$': typeof authSignInSplatRoute
   '/sign-up/$': typeof authSignUpSplatRoute
@@ -62,20 +70,32 @@ export interface FileRoutesById {
   '/(auth)': typeof authRouteRouteWithChildren
   '/(dashboard)': typeof dashboardRouteRouteWithChildren
   '/(auth)/select-organization': typeof authSelectOrganizationRoute
+  '/(dashboard)/text-to-speech': typeof dashboardTextToSpeechRoute
   '/(dashboard)/': typeof dashboardIndexRoute
   '/(auth)/sign-in/$': typeof authSignInSplatRoute
   '/(auth)/sign-up/$': typeof authSignUpSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/select-organization' | '/' | '/sign-in/$' | '/sign-up/$'
+  fullPaths:
+    | '/select-organization'
+    | '/text-to-speech'
+    | '/'
+    | '/sign-in/$'
+    | '/sign-up/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/select-organization' | '/' | '/sign-in/$' | '/sign-up/$'
+  to:
+    | '/select-organization'
+    | '/text-to-speech'
+    | '/'
+    | '/sign-in/$'
+    | '/sign-up/$'
   id:
     | '__root__'
     | '/(auth)'
     | '/(dashboard)'
     | '/(auth)/select-organization'
+    | '/(dashboard)/text-to-speech'
     | '/(dashboard)/'
     | '/(auth)/sign-in/$'
     | '/(auth)/sign-up/$'
@@ -107,6 +127,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof dashboardIndexRouteImport
+      parentRoute: typeof dashboardRouteRoute
+    }
+    '/(dashboard)/text-to-speech': {
+      id: '/(dashboard)/text-to-speech'
+      path: '/text-to-speech'
+      fullPath: '/text-to-speech'
+      preLoaderRoute: typeof dashboardTextToSpeechRouteImport
       parentRoute: typeof dashboardRouteRoute
     }
     '/(auth)/select-organization': {
@@ -150,10 +177,12 @@ const authRouteRouteWithChildren = authRouteRoute._addFileChildren(
 )
 
 interface dashboardRouteRouteChildren {
+  dashboardTextToSpeechRoute: typeof dashboardTextToSpeechRoute
   dashboardIndexRoute: typeof dashboardIndexRoute
 }
 
 const dashboardRouteRouteChildren: dashboardRouteRouteChildren = {
+  dashboardTextToSpeechRoute: dashboardTextToSpeechRoute,
   dashboardIndexRoute: dashboardIndexRoute,
 }
 

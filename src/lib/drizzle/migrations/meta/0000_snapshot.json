@@ -120,12 +120,8 @@
           "name": "generations_voice_id_voices_id_fk",
           "tableFrom": "generations",
           "tableTo": "voices",
-          "columnsFrom": [
-            "voice_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["voice_id"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "no action"
         }
@@ -263,10 +259,7 @@
     "public.voice_variant": {
       "name": "voice_variant",
       "schema": "public",
-      "values": [
-        "Custom",
-        "System"
-      ]
+      "values": ["Custom", "System"]
     }
   },
   "schemas": {},

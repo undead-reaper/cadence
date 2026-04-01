@@ -1,12 +1,16 @@
-import { OrganizationSwitcher, UserButton } from '@clerk/tanstack-react-start'
+import PageHeader from '@/components/PageHeader'
+import DashboardHeader from '@/features/dashboard/components/DashboardHeader'
+import QueryTextInput from '@/features/dashboard/components/QueryTextInput'
+import QuickActionsPanel from '@/features/dashboard/components/QuickActionsPanel'
 
 const HomeView = () => {
   return (
-    <main className="flex flex-col items-center gap-4 justify-center h-screen w-full">
-      <h1 className="text-2xl font-semibold">Welcome to Cadence</h1>
-      <div className="flex items-center gap-4">
-        <OrganizationSwitcher />
-        <UserButton />
+    <main>
+      <PageHeader title="Home" className="lg:hidden" />
+      <div className="space-y-8 p-4 lg:p-16">
+        <DashboardHeader />
+        <QueryTextInput />
+        <QuickActionsPanel />
       </div>
     </main>
   )
