@@ -2,9 +2,6 @@
   "name": "cadence",
   "private": true,
   "type": "module",
-  "imports": {
-    "#/*": "./src/*"
-  },
   "scripts": {
     "dev": "vite dev --port 3000",
     "build": "vite build",
@@ -23,6 +20,8 @@
   "dependencies": {
     "@clerk/tanstack-react-start": "^1.0.6",
     "@clerk/ui": "^1.2.3",
+    "@dicebear/collection": "^9.4.2",
+    "@dicebear/core": "^9.4.2",
     "@fontsource-variable/lora": "^5.2.8",
     "@fontsource-variable/manrope": "^5.2.8",
     "@t3-oss/env-core": "^0.13.10",

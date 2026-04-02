@@ -23,7 +23,7 @@ export const uploadAudio = ({
   return r2.file(key).write(buffer, { type: contentType })
 }
 
-export const deleteAudio = (key: string): Promise<void> => {
+export const deleteAudio = ({ key }: { key: string }): Promise<void> => {
   return r2.file(key).delete()
 }
 
