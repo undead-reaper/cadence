@@ -16,7 +16,7 @@ const VoicePreviewPlaceholder = () => {
             <AudioLines className="size-5 text-muted-foreground" />
           </div>
         </div>
-        <p className="text-lg font-semibold tracking-tight text-foreground mt-10">
+        <p className="text-lg font-semibold tracking-tight text-foreground mt-10 font-lora">
           Preview will appear here.
         </p>
         <p className="max-w-64 text-center text-sm text-muted-foreground">

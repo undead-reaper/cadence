@@ -1,4 +1,16 @@
+import {
+  generationRelations,
+  generations,
+} from '@/lib/drizzle/schemas/generations'
+import { voices, voicesRelations } from '@/lib/drizzle/schemas/voice'
 import { serverEnv } from '@/lib/env/server'
 import { drizzle } from 'drizzle-orm/node-postgres'
 
-export const db = drizzle(serverEnv.DATABASE_URL)
+export const db = drizzle(serverEnv.DATABASE_URL, {
+  schema: {
+    voices,
+    voicesRelations,
+    generations,
+    generationRelations,
+  },
+})

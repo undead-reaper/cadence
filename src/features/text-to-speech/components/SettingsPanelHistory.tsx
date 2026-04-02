@@ -16,7 +16,7 @@ const SettingsPanelHistory = () => {
           <Clock className="size-4 text-muted-foreground" />
         </div>
       </div>
-      <p className="font-semibold tracking-tight text-foreground mt-5">
+      <p className="font-semibold tracking-tight text-foreground mt-5 font-lora">
         No generations yet
       </p>
       <p className="max-w-48 text-center text-xs text-muted-foreground mt-2">

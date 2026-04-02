@@ -27,6 +27,7 @@ export const voices = pgTable(
       .primaryKey()
       .$defaultFn(() => nanoid()),
     organizationId: text('organization_id'),
+    name: text('name').notNull(),
     description: text('description'),
     category: voiceCategories('category').notNull().default('General'),
     language: text('language').notNull().default('en-US'),

@@ -18,6 +18,7 @@ const GenerateButton = ({
 }: Props) => {
   return (
     <Button
+      type="submit"
       className={className}
       size={size}
       disabled={disabled}
