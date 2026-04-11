@@ -1,4 +1,5 @@
 import GlobalErrorComponent from '@/components/GlobalErrorComponent'
+import PendingComponent from '@/components/PendingComponent'
 import { routeTree } from '@/routeTree.gen'
 import { createRouter as createTanStackRouter } from '@tanstack/react-router'
 
@@ -10,6 +11,8 @@ export function getRouter() {
     defaultPreload: 'intent',
     defaultPreloadStaleTime: 0,
     defaultErrorComponent: GlobalErrorComponent,
+    defaultPendingComponent: PendingComponent,
+    defaultPendingMinMs: 300,
   })
 
   return router

@@ -28,3 +28,17 @@ export const requireOrganizationAction = createMiddleware({
     return next({ context: { userId, orgId } })
   }
 })
+
+export const requireOrganizationRequest = createMiddleware({
+  type: 'request',
+}).server(async ({ next }) => {
+  const { isAuthenticated, userId, orgId } = await auth()
+  if (!isAuthenticated) {
+    throw redirect({ to: '/sign-in/$' })
+  } else {
+    if (!orgId) {
+      throw redirect({ to: '/select-organization' })
+    }
+    return next({ context: { userId, orgId } })
+  }
+})

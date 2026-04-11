@@ -27,6 +27,10 @@ export const deleteAudio = ({ key }: { key: string }): Promise<void> => {
   return r2.file(key).delete()
 }
 
-export const getSignedAudioUrl = async (key: string): Promise<string> => {
+export const getSignedAudioUrl = async ({
+  key,
+}: {
+  key: string
+}): Promise<string> => {
   return r2.file(key).presign({ expiresIn: 3600, method: 'GET' })
 }

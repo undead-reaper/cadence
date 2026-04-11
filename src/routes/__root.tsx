@@ -6,6 +6,7 @@ import { formDevtoolsPlugin } from '@tanstack/react-form-devtools'
 import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 
+import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import appCss from '@/styles.css?url'
 
@@ -65,6 +66,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             theme: shadcn,
           }}
         >
+          <Toaster richColors duration={2000} />
           <TooltipProvider>{children}</TooltipProvider>
         </ClerkProvider>
         <TanStackDevtools

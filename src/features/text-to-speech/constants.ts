@@ -27,10 +27,10 @@ export const SETTINGS_SLIDERS: Array<Slider> = [
     label: 'Expressiveness',
     leftLabel: 'Subtle',
     rightLabel: 'Dramatic',
-    min: 1,
+    min: 100,
     max: 10000,
     step: 100,
-    defaultValue: 1000,
+    defaultValue: 100,
   },
   {
     id: 'repetitionPenalty',

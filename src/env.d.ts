@@ -14,13 +14,21 @@ declare global {
       readonly NODE_ENV: 'development' | 'production' | 'test'
       readonly CLERK_SIGN_IN_URL: string
       readonly CLERK_SIGN_UP_URL: string
-      readonly DATABASE_URL: string
+      readonly DATABASE_HOST: string
+      readonly DATABASE_PORT: string
+      readonly DATABASE_USER: string
+      readonly DATABASE_PASSWORD: string
+      readonly DATABASE_NAME: string
+      readonly DATABASE_CA_CERT: string
       readonly CLERK_SIGN_IN_FORCE_REDIRECT_URL: string
       readonly CLERK_SIGN_UP_FORCE_REDIRECT_URL: string
       readonly R2_ACCOUNT_ID: string
       readonly R2_ACCESS_KEY_ID: string
       readonly R2_SECRET_ACCESS_KEY: string
       readonly R2_BUCKET_NAME: string
+      readonly HF_TOKEN: string
+      readonly CHATTERBOX_API_KEY: string
+      readonly CHATTERBOX_API_URL: string
     }
   }
 }
