@@ -1,3 +1,4 @@
+import { getAllGenerationsByOrganizationId } from '@/features/text-to-speech/functions/getAllGenerationsByOrganizationId'
 import { getGenerationById } from '@/features/text-to-speech/functions/getGenerationById'
 import TextToSpeechDetailsView from '@/features/text-to-speech/views/TextToSpeechDetailsView'
 import { getAllVoices } from '@/features/voices/functions/getAllVoices'
@@ -14,11 +15,12 @@ export const Route = createFileRoute(
   component: RouteComponent,
   beforeLoad: async ({ params }) => {
     const { generationId } = params
-    const [generation, { system, custom }] = await Promise.all([
+    const [generation, { system, custom }, generations] = await Promise.all([
       getGenerationById({ data: { generationId } }),
       getAllVoices(),
+      getAllGenerationsByOrganizationId(),
     ])
-    return { context: { generation, custom, system } }
+    return { context: { generation, custom, system, generations } }
   },
   loader: async ({ context }) => {
     return context

@@ -9,8 +9,21 @@ import {
 import { useTypedAppFormContext } from '@/hooks/use-app-form'
 import { useStore } from '@tanstack/react-form'
 import { Coins } from 'lucide-react'
+import SettingsDrawer from '@/features/text-to-speech/components/SettingsDrawer'
+import VoiceSelectorButton from '@/features/text-to-speech/components/VoiceSelectorButton'
+import HistoryDrawer from '@/features/text-to-speech/components/HistoryDrawer'
+import type { getAllGenerationsByOrganizationId } from '@/features/text-to-speech/functions/getAllGenerationsByOrganizationId'
+import PromptSuggestions from '@/features/text-to-speech/components/PromptSuggestions'
 
-const QueryInputPanel = () => {
+type Generation = Awaited<
+  ReturnType<typeof getAllGenerationsByOrganizationId>
+>[number]
+
+type Props = Readonly<{
+  generations: Array<Generation>
+}>
+
+const QueryInputPanel = ({ generations }: Props) => {
   const form = useTypedAppFormContext(ttsFormOptions)
   const query = useStore(form.store, (state) => state.values.query)
   const isSubmitting = useStore(form.store, (state) => state.isSubmitting)
@@ -21,7 +34,6 @@ const QueryInputPanel = () => {
         <form.Field
           name="query"
           children={(field) => {
-            const isInvalid = form.state.isBlurred && !form.state.isValid
             return (
               <Textarea
                 value={field.state.value}
@@ -38,6 +50,12 @@ const QueryInputPanel = () => {
       </div>
       <div className="shrink-0 p-4 lg:p-6">
         <div className="flex flex-col gap-3 lg:hidden">
+          <div className="flex items-center gap-2">
+            <SettingsDrawer>
+              <VoiceSelectorButton />
+            </SettingsDrawer>
+            <HistoryDrawer generations={generations} />
+          </div>
           <GenerateButton
             className="w-full"
             disabled={isSubmitting}
@@ -70,9 +88,9 @@ const QueryInputPanel = () => {
           </div>
         ) : (
           <div className="hidden lg:block">
-            <p className="text-sm text-muted-foreground">
-              Get started by typing or pasting your query
-            </p>
+            <PromptSuggestions
+              onSelect={(p) => form.setFieldValue('query', p)}
+            />
           </div>
         )}
       </div>

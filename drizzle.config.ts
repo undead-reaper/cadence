@@ -14,7 +14,7 @@ export default defineConfig({
     password: serverEnv.DATABASE_PASSWORD,
     database: serverEnv.DATABASE_NAME,
     ssl: {
-      cert: caCert,
+      ca: caCert,
       rejectUnauthorized: true,
     },
   },

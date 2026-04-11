@@ -13,7 +13,7 @@ const TextToSpeechView = () => {
   const { context } = routeApi.useLoaderData()
   const initialValues = routeApi.useSearch()
   const { voiceId } = initialValues
-  const { custom: customVoices, system: systemVoices } = context
+  const { custom: customVoices, system: systemVoices, generations } = context
   const allVoices = [...customVoices, ...systemVoices]
   const fallbackVoiceId = allVoices[0]?.id ?? ''
   const resolvedVoiceId =
@@ -32,10 +32,10 @@ const TextToSpeechView = () => {
       <TextToSpeechForm defaultValues={defaultValues}>
         <div className="flex min-h-0 flex-1 overflow-hidden">
           <div className="flex min-h-0 flex-1 flex-col">
-            <QueryInputPanel />
+            <QueryInputPanel generations={generations} />
             <VoicePreviewPlaceholder />
           </div>
-          <SettingsPanel />
+          <SettingsPanel generations={generations} />
         </div>
       </TextToSpeechForm>
     </TTSVoicesProvider>

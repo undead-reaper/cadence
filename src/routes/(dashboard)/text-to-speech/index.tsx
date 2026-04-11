@@ -1,3 +1,4 @@
+import { getAllGenerationsByOrganizationId } from '@/features/text-to-speech/functions/getAllGenerationsByOrganizationId'
 import TextToSpeechView from '@/features/text-to-speech/views/TextToSpeechView'
 import { getAllVoices } from '@/features/voices/functions/getAllVoices'
 import { createFileRoute } from '@tanstack/react-router'
@@ -10,8 +11,11 @@ const textToSpeechSearchSchema = z.object({
 export const Route = createFileRoute('/(dashboard)/text-to-speech/')({
   validateSearch: textToSpeechSearchSchema,
   beforeLoad: async () => {
-    const { custom, system } = await getAllVoices()
-    return { custom, system }
+    const [{ system, custom }, generations] = await Promise.all([
+      getAllVoices(),
+      getAllGenerationsByOrganizationId(),
+    ])
+    return { custom, system, generations }
   },
   loader: async ({ context }) => {
     return { context }

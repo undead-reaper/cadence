@@ -64,9 +64,11 @@ const VoicePreviewPanel = ({ audioUrl, voice, query }: Props) => {
   return (
     <div className="h-full gap-8 flex-col border-t hidden flex-1 lg:flex">
       <div className="p-6 pb-0">
-        <h3 className="font-semibold text-foreground">Voice Preview</h3>
+        <h3 className="font-semibold text-foreground font-lora">
+          Voice Preview
+        </h3>
       </div>
-      <div className="relative flex flex-1 items-center justify-center">
+      <div className="flex flex-col w-full h-full flex-1 items-center justify-center">
         {!isReady && <Spinner />}
         <div
           ref={containerRef}

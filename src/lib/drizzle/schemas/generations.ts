@@ -27,7 +27,7 @@ export const generations = pgTable(
     topP: real('top_p').notNull(),
     topK: integer('top_k').notNull(),
     repetitionPenalty: real('repetition_penalty').notNull(),
-    createdAt: timestamp('created_at').defaultNow(),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at')
       .defaultNow()
       .$onUpdateFn(() => new Date()),

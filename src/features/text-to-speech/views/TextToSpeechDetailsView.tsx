@@ -11,7 +11,12 @@ const TextToSpeechDetailsView = () => {
   const routeApi = getRouteApi('/(dashboard)/text-to-speech/$generationId')
   const { context } = routeApi.useLoaderData()
   const { generationId } = routeApi.useParams()
-  const { custom: customVoices, system: systemVoices, generation } = context
+  const {
+    custom: customVoices,
+    system: systemVoices,
+    generation,
+    generations,
+  } = context
   const allVoices = [...customVoices, ...systemVoices]
   const fallbackVoiceId = allVoices[0]?.id ?? ''
   const resolvedVoiceId =
@@ -38,7 +43,7 @@ const TextToSpeechDetailsView = () => {
       <TextToSpeechForm key={generationId} defaultValues={defaultValues}>
         <div className="flex min-h-0 flex-1 overflow-hidden">
           <div className="flex min-h-0 flex-1 flex-col">
-            <QueryInputPanel />
+            <QueryInputPanel generations={generations} />
             <VoicePreviewPanel
               audioUrl={generation.audioUrl}
               voice={generationVoice}
@@ -50,7 +55,7 @@ const TextToSpeechDetailsView = () => {
               query={generation.prompt}
             />
           </div>
-          <SettingsPanel />
+          <SettingsPanel generations={generations} />
         </div>
       </TextToSpeechForm>
     </TTSVoicesProvider>
