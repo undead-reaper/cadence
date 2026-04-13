@@ -12,7 +12,7 @@ const r2 = new S3Client({
 type AudioBufferOptions = {
   buffer: Buffer
   key: string
-  contentType?: 'audio/wav'
+  contentType?: 'audio/wav' | string
 }
 
 export const uploadAudio = ({

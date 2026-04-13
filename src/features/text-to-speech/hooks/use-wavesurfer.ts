@@ -34,6 +34,9 @@ export function useWavesurfer({
   const [isReady, setIsReady] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
+  const styles = getComputedStyle(document.documentElement)
+  const chart1 = styles.getPropertyValue('--chart-1')
+  const mutedForeground = styles.getPropertyValue('--muted-foreground')
 
   useEffect(() => {
     if (!containerRef.current || !url) return
@@ -47,8 +50,9 @@ export function useWavesurfer({
 
     const ws = WaveSurfer.create({
       container: containerRef.current,
-      progressColor: '#46ecd5',
-      cursorColor: '#46ecd5',
+      waveColor: mutedForeground,
+      progressColor: chart1,
+      cursorColor: chart1,
       cursorWidth: 2,
       barWidth: 2,
       barGap: 2,

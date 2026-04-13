@@ -13,8 +13,12 @@ import { Route as dashboardRouteRouteImport } from './routes/(dashboard)/route'
 import { Route as authRouteRouteImport } from './routes/(auth)/route'
 import { Route as dashboardIndexRouteImport } from './routes/(dashboard)/index'
 import { Route as authSelectOrganizationRouteImport } from './routes/(auth)/select-organization'
+import { Route as dashboardVoicesRouteRouteImport } from './routes/(dashboard)/voices/route'
 import { Route as dashboardTextToSpeechRouteRouteImport } from './routes/(dashboard)/text-to-speech/route'
+import { Route as dashboardVoicesIndexRouteImport } from './routes/(dashboard)/voices/index'
 import { Route as dashboardTextToSpeechIndexRouteImport } from './routes/(dashboard)/text-to-speech/index'
+import { Route as ApiVoicesCreateRouteImport } from './routes/api/voices/create'
+import { Route as ApiVoicesVoiceIdRouteImport } from './routes/api/voices/$voiceId'
 import { Route as ApiAudioGenerationIdRouteImport } from './routes/api/audio.$generationId'
 import { Route as dashboardTextToSpeechGenerationIdRouteImport } from './routes/(dashboard)/text-to-speech/$generationId'
 import { Route as authSignUpSplatRouteImport } from './routes/(auth)/sign-up.$'
@@ -38,18 +42,38 @@ const authSelectOrganizationRoute = authSelectOrganizationRouteImport.update({
   path: '/select-organization',
   getParentRoute: () => authRouteRoute,
 } as any)
+const dashboardVoicesRouteRoute = dashboardVoicesRouteRouteImport.update({
+  id: '/voices',
+  path: '/voices',
+  getParentRoute: () => dashboardRouteRoute,
+} as any)
 const dashboardTextToSpeechRouteRoute =
   dashboardTextToSpeechRouteRouteImport.update({
     id: '/text-to-speech',
     path: '/text-to-speech',
     getParentRoute: () => dashboardRouteRoute,
   } as any)
+const dashboardVoicesIndexRoute = dashboardVoicesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => dashboardVoicesRouteRoute,
+} as any)
 const dashboardTextToSpeechIndexRoute =
   dashboardTextToSpeechIndexRouteImport.update({
     id: '/',
     path: '/',
     getParentRoute: () => dashboardTextToSpeechRouteRoute,
   } as any)
+const ApiVoicesCreateRoute = ApiVoicesCreateRouteImport.update({
+  id: '/api/voices/create',
+  path: '/api/voices/create',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiVoicesVoiceIdRoute = ApiVoicesVoiceIdRouteImport.update({
+  id: '/api/voices/$voiceId',
+  path: '/api/voices/$voiceId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAudioGenerationIdRoute = ApiAudioGenerationIdRouteImport.update({
   id: '/api/audio/$generationId',
   path: '/api/audio/$generationId',
@@ -74,13 +98,17 @@ const authSignInSplatRoute = authSignInSplatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/text-to-speech': typeof dashboardTextToSpeechRouteRouteWithChildren
+  '/voices': typeof dashboardVoicesRouteRouteWithChildren
   '/select-organization': typeof authSelectOrganizationRoute
   '/': typeof dashboardIndexRoute
   '/sign-in/$': typeof authSignInSplatRoute
   '/sign-up/$': typeof authSignUpSplatRoute
   '/text-to-speech/$generationId': typeof dashboardTextToSpeechGenerationIdRoute
   '/api/audio/$generationId': typeof ApiAudioGenerationIdRoute
+  '/api/voices/$voiceId': typeof ApiVoicesVoiceIdRoute
+  '/api/voices/create': typeof ApiVoicesCreateRoute
   '/text-to-speech/': typeof dashboardTextToSpeechIndexRoute
+  '/voices/': typeof dashboardVoicesIndexRoute
 }
 export interface FileRoutesByTo {
   '/select-organization': typeof authSelectOrganizationRoute
@@ -89,32 +117,43 @@ export interface FileRoutesByTo {
   '/sign-up/$': typeof authSignUpSplatRoute
   '/text-to-speech/$generationId': typeof dashboardTextToSpeechGenerationIdRoute
   '/api/audio/$generationId': typeof ApiAudioGenerationIdRoute
+  '/api/voices/$voiceId': typeof ApiVoicesVoiceIdRoute
+  '/api/voices/create': typeof ApiVoicesCreateRoute
   '/text-to-speech': typeof dashboardTextToSpeechIndexRoute
+  '/voices': typeof dashboardVoicesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(auth)': typeof authRouteRouteWithChildren
   '/(dashboard)': typeof dashboardRouteRouteWithChildren
   '/(dashboard)/text-to-speech': typeof dashboardTextToSpeechRouteRouteWithChildren
+  '/(dashboard)/voices': typeof dashboardVoicesRouteRouteWithChildren
   '/(auth)/select-organization': typeof authSelectOrganizationRoute
   '/(dashboard)/': typeof dashboardIndexRoute
   '/(auth)/sign-in/$': typeof authSignInSplatRoute
   '/(auth)/sign-up/$': typeof authSignUpSplatRoute
   '/(dashboard)/text-to-speech/$generationId': typeof dashboardTextToSpeechGenerationIdRoute
   '/api/audio/$generationId': typeof ApiAudioGenerationIdRoute
+  '/api/voices/$voiceId': typeof ApiVoicesVoiceIdRoute
+  '/api/voices/create': typeof ApiVoicesCreateRoute
   '/(dashboard)/text-to-speech/': typeof dashboardTextToSpeechIndexRoute
+  '/(dashboard)/voices/': typeof dashboardVoicesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/text-to-speech'
+    | '/voices'
     | '/select-organization'
     | '/'
     | '/sign-in/$'
     | '/sign-up/$'
     | '/text-to-speech/$generationId'
     | '/api/audio/$generationId'
+    | '/api/voices/$voiceId'
+    | '/api/voices/create'
     | '/text-to-speech/'
+    | '/voices/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/select-organization'
@@ -123,25 +162,34 @@ export interface FileRouteTypes {
     | '/sign-up/$'
     | '/text-to-speech/$generationId'
     | '/api/audio/$generationId'
+    | '/api/voices/$voiceId'
+    | '/api/voices/create'
     | '/text-to-speech'
+    | '/voices'
   id:
     | '__root__'
     | '/(auth)'
     | '/(dashboard)'
     | '/(dashboard)/text-to-speech'
+    | '/(dashboard)/voices'
     | '/(auth)/select-organization'
     | '/(dashboard)/'
     | '/(auth)/sign-in/$'
     | '/(auth)/sign-up/$'
     | '/(dashboard)/text-to-speech/$generationId'
     | '/api/audio/$generationId'
+    | '/api/voices/$voiceId'
+    | '/api/voices/create'
     | '/(dashboard)/text-to-speech/'
+    | '/(dashboard)/voices/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   authRouteRoute: typeof authRouteRouteWithChildren
   dashboardRouteRoute: typeof dashboardRouteRouteWithChildren
   ApiAudioGenerationIdRoute: typeof ApiAudioGenerationIdRoute
+  ApiVoicesVoiceIdRoute: typeof ApiVoicesVoiceIdRoute
+  ApiVoicesCreateRoute: typeof ApiVoicesCreateRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -174,6 +222,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authSelectOrganizationRouteImport
       parentRoute: typeof authRouteRoute
     }
+    '/(dashboard)/voices': {
+      id: '/(dashboard)/voices'
+      path: '/voices'
+      fullPath: '/voices'
+      preLoaderRoute: typeof dashboardVoicesRouteRouteImport
+      parentRoute: typeof dashboardRouteRoute
+    }
     '/(dashboard)/text-to-speech': {
       id: '/(dashboard)/text-to-speech'
       path: '/text-to-speech'
@@ -181,12 +236,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof dashboardTextToSpeechRouteRouteImport
       parentRoute: typeof dashboardRouteRoute
     }
+    '/(dashboard)/voices/': {
+      id: '/(dashboard)/voices/'
+      path: '/'
+      fullPath: '/voices/'
+      preLoaderRoute: typeof dashboardVoicesIndexRouteImport
+      parentRoute: typeof dashboardVoicesRouteRoute
+    }
     '/(dashboard)/text-to-speech/': {
       id: '/(dashboard)/text-to-speech/'
       path: '/'
       fullPath: '/text-to-speech/'
       preLoaderRoute: typeof dashboardTextToSpeechIndexRouteImport
       parentRoute: typeof dashboardTextToSpeechRouteRoute
+    }
+    '/api/voices/create': {
+      id: '/api/voices/create'
+      path: '/api/voices/create'
+      fullPath: '/api/voices/create'
+      preLoaderRoute: typeof ApiVoicesCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/voices/$voiceId': {
+      id: '/api/voices/$voiceId'
+      path: '/api/voices/$voiceId'
+      fullPath: '/api/voices/$voiceId'
+      preLoaderRoute: typeof ApiVoicesVoiceIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/audio/$generationId': {
       id: '/api/audio/$generationId'
@@ -252,13 +328,26 @@ const dashboardTextToSpeechRouteRouteWithChildren =
     dashboardTextToSpeechRouteRouteChildren,
   )
 
+interface dashboardVoicesRouteRouteChildren {
+  dashboardVoicesIndexRoute: typeof dashboardVoicesIndexRoute
+}
+
+const dashboardVoicesRouteRouteChildren: dashboardVoicesRouteRouteChildren = {
+  dashboardVoicesIndexRoute: dashboardVoicesIndexRoute,
+}
+
+const dashboardVoicesRouteRouteWithChildren =
+  dashboardVoicesRouteRoute._addFileChildren(dashboardVoicesRouteRouteChildren)
+
 interface dashboardRouteRouteChildren {
   dashboardTextToSpeechRouteRoute: typeof dashboardTextToSpeechRouteRouteWithChildren
+  dashboardVoicesRouteRoute: typeof dashboardVoicesRouteRouteWithChildren
   dashboardIndexRoute: typeof dashboardIndexRoute
 }
 
 const dashboardRouteRouteChildren: dashboardRouteRouteChildren = {
   dashboardTextToSpeechRouteRoute: dashboardTextToSpeechRouteRouteWithChildren,
+  dashboardVoicesRouteRoute: dashboardVoicesRouteRouteWithChildren,
   dashboardIndexRoute: dashboardIndexRoute,
 }
 
@@ -270,6 +359,8 @@ const rootRouteChildren: RootRouteChildren = {
   authRouteRoute: authRouteRouteWithChildren,
   dashboardRouteRoute: dashboardRouteRouteWithChildren,
   ApiAudioGenerationIdRoute: ApiAudioGenerationIdRoute,
+  ApiVoicesVoiceIdRoute: ApiVoicesVoiceIdRoute,
+  ApiVoicesCreateRoute: ApiVoicesCreateRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

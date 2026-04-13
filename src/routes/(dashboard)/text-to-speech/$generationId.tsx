@@ -13,14 +13,14 @@ export const Route = createFileRoute(
 )({
   params: TextToSpeechGenerationParams,
   component: RouteComponent,
-  beforeLoad: async ({ params }) => {
+  beforeLoad: async ({ params, context }) => {
     const { generationId } = params
     const [generation, { system, custom }, generations] = await Promise.all([
       getGenerationById({ data: { generationId } }),
       getAllVoices(),
       getAllGenerationsByOrganizationId(),
     ])
-    return { context: { generation, custom, system, generations } }
+    return { context: { generation, custom, system, generations, ...context } }
   },
   loader: async ({ context }) => {
     return context
