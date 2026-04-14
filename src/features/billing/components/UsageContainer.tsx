@@ -6,13 +6,15 @@ import { useQuery } from '@tanstack/react-query'
 
 const UsageContainer = () => {
   const { organization } = useOrganization()
+  const orgId = organization?.id
 
   const { data, isPending } = useQuery({
-    queryKey: ['billing', 'subscription-status', organization?.id],
+    enabled: Boolean(orgId),
+    queryKey: ['billing', 'subscription-status', orgId],
     queryFn: () => getSubscriptionStatus(),
   })
 
-  if (isPending || !data) {
+  if (isPending || !data || !orgId) {
     return (
       <div className="group-data-[collapsible=icon]:hidden h-30 bg-muted rounded-lg p-3 animate-pulse" />
     )

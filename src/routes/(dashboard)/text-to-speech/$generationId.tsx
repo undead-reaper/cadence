@@ -1,7 +1,5 @@
-import { getAllGenerationsByOrganizationId } from '@/features/text-to-speech/functions/getAllGenerationsByOrganizationId'
-import { getGenerationById } from '@/features/text-to-speech/functions/getGenerationById'
+import { getGenerationByIdQuery } from '@/features/text-to-speech/queries/getGenerationByIdQuery'
 import TextToSpeechDetailsView from '@/features/text-to-speech/views/TextToSpeechDetailsView'
-import { getAllVoices } from '@/features/voices/functions/getAllVoices'
 import { createFileRoute } from '@tanstack/react-router'
 import { z } from 'zod'
 
@@ -14,16 +12,20 @@ export const Route = createFileRoute(
   params: TextToSpeechGenerationParams,
   component: RouteComponent,
   beforeLoad: async ({ params, context }) => {
-    const { generationId } = params
-    const [generation, { system, custom }, generations] = await Promise.all([
-      getGenerationById({ data: { generationId } }),
-      getAllVoices(),
-      getAllGenerationsByOrganizationId(),
-    ])
-    return { context: { generation, custom, system, generations, ...context } }
+    await context.queryClient.prefetchQuery(
+      getGenerationByIdQuery({
+        generationId: params.generationId,
+        orgId: context.orgId,
+      }),
+    )
   },
-  loader: async ({ context }) => {
-    return context
+  loader: async ({ context, params }) => {
+    await context.queryClient.ensureQueryData(
+      getGenerationByIdQuery({
+        generationId: params.generationId,
+        orgId: context.orgId,
+      }),
+    )
   },
 })
 

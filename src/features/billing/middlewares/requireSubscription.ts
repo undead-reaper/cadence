@@ -1,5 +1,5 @@
 import { createMiddleware } from '@tanstack/react-start'
-import { getSubscriptionStatus } from '../functions/getSubscriptionStatus'
+import { getSubscriptionStatus } from '@/features/billing/functions/getSubscriptionStatus'
 import {
   requireOrganizationAction,
   requireOrganizationRequest,

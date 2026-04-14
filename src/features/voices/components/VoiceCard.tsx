@@ -23,7 +23,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { deleteVoiceById } from '../functions/deleteVoiceById'
+import { deleteVoiceById } from '@/features/voices/functions/deleteVoiceById'
 import { toast } from 'sonner'
 import { LoadingSwap } from '@/components/ui/loading-swap'
 

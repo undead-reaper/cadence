@@ -5,17 +5,33 @@ import {
 } from '@/components/ui/input-group'
 import { getRouteApi } from '@tanstack/react-router'
 import { Plus, Search } from 'lucide-react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { useDebouncedValue } from '@tanstack/react-pacer'
 import CreateVoiceDialog from '@/features/voices/components/CreateVoiceDialog'
+import { useHotkey } from '@tanstack/react-hotkeys'
+import { Kbd } from '@/components/ui/kbd'
 
 const VoicesToolbar = () => {
   const routeApi = getRouteApi('/(dashboard)/voices/')
   const { query } = routeApi.useSearch()
   const navigate = routeApi.useNavigate()
-  const [localQuery, setLocalQuery] = useState(query)
+  const [localQuery, setLocalQuery] = useState(query ?? '')
+  const searchRef = useRef<HTMLInputElement>(null)
   const [showCreateDialog, setShowCreateDialog] = useState(false)
+  useHotkey(
+    'Mod+K',
+    () => {
+      if (searchRef.current) {
+        searchRef.current.focus()
+      }
+    },
+    {
+      preventDefault: true,
+      requireReset: true,
+      enabled: Boolean(searchRef.current),
+    },
+  )
 
   useDebouncedValue(
     () => {
@@ -47,12 +63,16 @@ const VoicesToolbar = () => {
               <Search className="size-4" />
             </InputGroupAddon>
             <InputGroupInput
+              ref={searchRef}
               placeholder="Search Voices"
               value={localQuery}
               onChange={(e) => {
                 setLocalQuery(e.target.value)
               }}
             />
+            <InputGroupAddon align="inline-end">
+              <Kbd>⌘K</Kbd>
+            </InputGroupAddon>
           </InputGroup>
           <div className="ml-auto hidden lg:block">
             <Button onClick={() => setShowCreateDialog(true)} size="sm">

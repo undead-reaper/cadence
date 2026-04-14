@@ -6,17 +6,26 @@ import { TTSVoicesProvider } from '@/features/text-to-speech/contexts/tts-voices
 import type { TTSFormData } from '@/features/text-to-speech/types/ttsFormSchema'
 import VoicePreviewPanel from '@/features/text-to-speech/components/VoicePreviewPanel'
 import VoicePreviewMobile from '@/features/text-to-speech/components/VoicePreviewMobile'
+import { useOrganization } from '@clerk/tanstack-react-start'
+import { useSuspenseQuery } from '@tanstack/react-query'
+import { getGenerationByIdQuery } from '@/features/text-to-speech/queries/getGenerationByIdQuery'
 
 const TextToSpeechDetailsView = () => {
   const routeApi = getRouteApi('/(dashboard)/text-to-speech/$generationId')
-  const { context } = routeApi.useLoaderData()
+  const { orgId } = routeApi.useRouteContext()
   const { generationId } = routeApi.useParams()
+  const { organization } = useOrganization()
+  const resolvedOrgId = organization?.id ?? orgId
   const {
-    custom: customVoices,
-    system: systemVoices,
-    generation,
-    generations,
-  } = context
+    data: {
+      generation,
+      custom: customVoices,
+      system: systemVoices,
+      generations,
+    },
+  } = useSuspenseQuery(
+    getGenerationByIdQuery({ generationId, orgId: resolvedOrgId }),
+  )
   const allVoices = [...customVoices, ...systemVoices]
   const fallbackVoiceId = allVoices[0]?.id ?? ''
   const resolvedVoiceId =

@@ -1,5 +1,5 @@
 import type { voiceCategories } from '@/lib/drizzle/schemas/voice'
-import { CANONICAL_SYSTEM_VOICE_NAMES } from './voice-scoping'
+import { CANONICAL_SYSTEM_VOICE_NAMES } from '@/features/voices/data/voice-scoping'
 
 type VoiceCategory = (typeof voiceCategories.enumValues)[number]
 

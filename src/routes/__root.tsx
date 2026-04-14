@@ -3,16 +3,24 @@ import { ui } from '@clerk/ui'
 import { shadcn } from '@clerk/ui/themes'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import { formDevtoolsPlugin } from '@tanstack/react-form-devtools'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
+import {
+  HeadContent,
+  Scripts,
+  createRootRouteWithContext,
+} from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { pacerDevtoolsPlugin } from '@tanstack/react-pacer-devtools'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import type { QueryClient } from '@tanstack/react-query'
+import { hotkeysDevtoolsPlugin } from '@tanstack/react-hotkeys-devtools'
 
 import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import appCss from '@/styles.css?url'
 
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<{
+  queryClient: QueryClient
+}>()({
   head: () => ({
     meta: [
       {
@@ -39,15 +47,6 @@ export const Route = createRootRoute({
     ],
   }),
   shellComponent: RootDocument,
-})
-
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 60 * 1000,
-      gcTime: 5 * 60 * 1000,
-    },
-  },
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
@@ -77,10 +76,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             theme: shadcn,
           }}
         >
-          <QueryClientProvider client={queryClient}>
-            <Toaster richColors duration={2000} />
-            <TooltipProvider>{children}</TooltipProvider>
-          </QueryClientProvider>
+          <Toaster richColors duration={2000} />
+          <TooltipProvider>{children}</TooltipProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
         </ClerkProvider>
         <TanStackDevtools
           config={{
@@ -93,6 +91,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             },
             formDevtoolsPlugin(),
             pacerDevtoolsPlugin(),
+            hotkeysDevtoolsPlugin(),
           ]}
         />
         <Scripts />

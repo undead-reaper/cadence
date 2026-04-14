@@ -15,9 +15,6 @@ export const useVoiceRecorder = () => {
   const containerRef = useRef<HTMLDivElement>(null)
   const wsRef = useRef<WaveSurfer | null>(null)
   const micStreamRef = useRef<{ onDestroy: () => void } | null>(null)
-  const styles = getComputedStyle(document.documentElement)
-  const chart1 = styles.getPropertyValue('--chart-1')
-  const mutedForeground = styles.getPropertyValue('--muted-foreground')
 
   const destroyWaveSurfer = useCallback(() => {
     if (micStreamRef.current) {
@@ -50,9 +47,8 @@ export const useVoiceRecorder = () => {
     if (isRecording && containerRef.current && streamRef.current) {
       const ws = WaveSurfer.create({
         container: containerRef.current,
-        waveColor: mutedForeground,
-        progressColor: chart1,
-        cursorColor: chart1,
+        progressColor: '#46ecd5',
+        cursorColor: '#46ecd5',
         cursorWidth: 0,
         barWidth: 1,
         barGap: 2,
