@@ -1,4 +1,3 @@
-import { requireOrganizationRequest } from '@/features/auth/middlewares/requireOrganization'
 import { voiceCategories, voices } from '@/lib/drizzle/schemas/voice'
 import { createFileRoute } from '@tanstack/react-router'
 import { z } from 'zod'
@@ -6,6 +5,8 @@ import { parseBuffer } from 'music-metadata'
 import { db } from '@/lib/drizzle'
 import { uploadAudio } from '@/lib/r2'
 import { and, eq } from 'drizzle-orm'
+import { requireSubscriptionRequest } from '@/features/billing/middlewares/requireSubscription'
+import { polar } from '@/lib/polar'
 
 const MAX_UPLOAD_SIZE_BYTES = 20 * 1024 * 1024 // 20MB
 const MIN_AUDIO_DURATION_SECONDS = 10 // 1 second
@@ -20,7 +21,7 @@ const searchParamsParser = z.object({
 export const Route = createFileRoute('/api/voices/create')({
   validateSearch: searchParamsParser,
   server: {
-    middleware: [requireOrganizationRequest],
+    middleware: [requireSubscriptionRequest],
     handlers: {
       POST: async ({ context, request }) => {
         const url = new URL(request.url)
@@ -140,6 +141,19 @@ export const Route = createFileRoute('/api/voices/create')({
             }
           }
         }
+
+        polar.events
+          .ingest({
+            events: [
+              {
+                name: 'voice_creation',
+                externalCustomerId: context.orgId,
+                timestamp: new Date(),
+              },
+            ],
+          })
+          .catch(() => {})
+
         return Response.json(
           {
             message: 'Voice created successfully',

@@ -12,6 +12,7 @@ declare global {
     interface ProcessEnv {
       readonly CLERK_SECRET_KEY: string
       readonly NODE_ENV: 'development' | 'production' | 'test'
+      readonly BASE_URL: string
       readonly CLERK_SIGN_IN_URL: string
       readonly CLERK_SIGN_UP_URL: string
       readonly DATABASE_HOST: string
@@ -29,6 +30,9 @@ declare global {
       readonly HF_TOKEN: string
       readonly CHATTERBOX_API_KEY: string
       readonly CHATTERBOX_API_URL: string
+      readonly POLAR_ACCESS_TOKEN: string
+      readonly POLAR_SERVER_MODE: string
+      readonly POLAR_PRODUCT_ID: string
     }
   }
 }

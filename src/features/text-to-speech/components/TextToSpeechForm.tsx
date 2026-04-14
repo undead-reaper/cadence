@@ -1,3 +1,4 @@
+import { createCheckout } from '@/features/billing/functions/createCheckout'
 import { createGeneration } from '@/features/text-to-speech/functions/createGeneration'
 import type { TTSFormData } from '@/features/text-to-speech/types/ttsFormSchema'
 import { ttsFormSchema } from '@/features/text-to-speech/types/ttsFormSchema'
@@ -26,6 +27,7 @@ type Props = Readonly<{
 }>
 const TextToSpeechForm = ({ children, defaultValues }: Props) => {
   const navigate = useNavigate()
+
   const form = useAppForm({
     ...ttsFormOptions,
     defaultValues: defaultValues || defaultTTSValues,
@@ -52,7 +54,20 @@ const TextToSpeechForm = ({ children, defaultValues }: Props) => {
           params: { generationId: result.generationId },
         })
       } catch (error) {
-        if (error instanceof Error) {
+        const checkout = await createCheckout()
+        if (
+          error instanceof Error &&
+          error.message.includes(
+            'An active subscription is required to perform this action.',
+          )
+        ) {
+          toast.error(error.message, {
+            action: {
+              label: 'Subscribe',
+              onClick: () => (window.location.href = checkout.checkoutUrl),
+            },
+          })
+        } else if (error instanceof Error) {
           toast.error('Failed to Generate Voice', {
             description: error.message,
           })

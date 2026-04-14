@@ -1,9 +1,10 @@
-import { requireOrganizationAction } from '@/features/auth/middlewares/requireOrganization'
+import { requireSubscriptionAction } from '@/features/billing/middlewares/requireSubscription'
 import { MAX_QUERY_LENGTH } from '@/features/text-to-speech/constants'
 import { chatterbox } from '@/lib/chatterbox-client'
 import { db } from '@/lib/drizzle'
 import { generations } from '@/lib/drizzle/schemas/generations'
 import { voices } from '@/lib/drizzle/schemas/voice'
+import { polar } from '@/lib/polar'
 import { uploadAudio } from '@/lib/r2'
 import { createServerFn } from '@tanstack/react-start'
 import { and, eq, or } from 'drizzle-orm'
@@ -12,13 +13,13 @@ import { z } from 'zod'
 const createGenerationInput = z.object({
   query: z.string().trim().min(1).max(MAX_QUERY_LENGTH),
   voiceId: z.string().trim().min(1),
-  temperature: z.number().min(0).max(2).step(0.1).default(0.8),
-  topP: z.number().min(0).max(1).step(0.05).default(0.95),
-  topK: z.number().min(100).max(10000).step(100).default(100),
-  repetitionPenalty: z.number().min(1).max(2).step(0.1).default(1.2),
+  temperature: z.number().min(0).max(2).multipleOf(0.1).default(0.8),
+  topP: z.number().min(0).max(1).multipleOf(0.05).default(0.95),
+  topK: z.number().min(100).max(10000).multipleOf(100).default(100),
+  repetitionPenalty: z.number().min(1).max(2).multipleOf(0.1).default(1.2),
 })
 export const createGeneration = createServerFn({ method: 'POST' })
-  .middleware([requireOrganizationAction])
+  .middleware([requireSubscriptionAction])
   .inputValidator(createGenerationInput)
   .handler(async ({ data, context }) => {
     const voice = await db.query.voices.findFirst({
@@ -119,6 +120,18 @@ export const createGeneration = createServerFn({ method: 'POST' })
         if (!r2ObjectKey || !generationId) {
           throw new Error('Failed to save generation')
         } else {
+          polar.events
+            .ingest({
+              events: [
+                {
+                  name: 'tts_generation',
+                  externalCustomerId: context.orgId,
+                  metadata: { characters: data.query.length },
+                  timestamp: new Date(),
+                },
+              ],
+            })
+            .catch(() => {})
           return { generationId }
         }
       }

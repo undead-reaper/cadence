@@ -18,8 +18,6 @@ export const createVoice = async ({ data }: CreateVoiceArgs) => {
   if (data.description) {
     params.set('description', data.description)
   }
-  const url = `/api/voices/create?${params.toString()}`
-  console.log('Creating voice with URL:', url) // Debug log
 
   const response = await fetch(`/api/voices/create?${params.toString()}`, {
     method: 'POST',

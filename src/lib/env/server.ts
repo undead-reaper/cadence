@@ -4,7 +4,10 @@ import { z } from 'zod'
 export const serverEnv = createEnv({
   server: {
     CLERK_SECRET_KEY: z.string().trim().min(1),
-    NODE_ENV: z.enum(['development', 'production', 'test']),
+    NODE_ENV: z
+      .enum(['development', 'production', 'test'])
+      .default('development'),
+    BASE_URL: z.string().trim().min(1),
     CLERK_SIGN_IN_URL: z.string().trim().min(1),
     CLERK_SIGN_UP_URL: z.string().trim().min(1),
     CLERK_SIGN_IN_FORCE_REDIRECT_URL: z.string().trim().min(1),
@@ -22,6 +25,9 @@ export const serverEnv = createEnv({
     HF_TOKEN: z.string().trim().min(1),
     CHATTERBOX_API_KEY: z.string().trim().min(1),
     CHATTERBOX_API_URL: z.string().trim().min(1),
+    POLAR_ACCESS_TOKEN: z.string().trim().min(1),
+    POLAR_SERVER_MODE: z.enum(['sandbox', 'production']).default('sandbox'),
+    POLAR_PRODUCT_ID: z.string().trim().min(1),
   },
   emptyStringAsUndefined: true,
   runtimeEnvStrict: process.env,

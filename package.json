@@ -27,6 +27,7 @@
     "@dicebear/core": "^9.4.2",
     "@fontsource-variable/lora": "^5.2.8",
     "@fontsource-variable/manrope": "^5.2.8",
+    "@polar-sh/sdk": "^0.47.0",
     "@t3-oss/env-core": "^0.13.10",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-devtools": "latest",

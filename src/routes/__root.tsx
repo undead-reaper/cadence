@@ -3,6 +3,7 @@ import { ui } from '@clerk/ui'
 import { shadcn } from '@clerk/ui/themes'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import { formDevtoolsPlugin } from '@tanstack/react-form-devtools'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { pacerDevtoolsPlugin } from '@tanstack/react-pacer-devtools'
@@ -40,6 +41,15 @@ export const Route = createRootRoute({
   shellComponent: RootDocument,
 })
 
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60 * 1000,
+      gcTime: 5 * 60 * 1000,
+    },
+  },
+})
+
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -67,8 +77,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             theme: shadcn,
           }}
         >
-          <Toaster richColors duration={2000} />
-          <TooltipProvider>{children}</TooltipProvider>
+          <QueryClientProvider client={queryClient}>
+            <Toaster richColors duration={2000} />
+            <TooltipProvider>{children}</TooltipProvider>
+          </QueryClientProvider>
         </ClerkProvider>
         <TanStackDevtools
           config={{

@@ -17,6 +17,8 @@ import {
 import { useIsMobile } from '@/hooks/use-mobile'
 import CreateVoiceForm from '@/features/voices/components/CreateVoiceForm'
 import { Button } from '@/components/ui/button'
+import { toast } from 'sonner'
+import { createCheckout } from '@/features/billing/functions/createCheckout'
 
 type Props = Readonly<{
   open: boolean
@@ -25,6 +27,26 @@ type Props = Readonly<{
 
 const CreateVoiceDialog = ({ open, onOpenChange }: Props) => {
   const isMobile = useIsMobile()
+
+  const handleError = (message: string) => {
+    if (
+      message.includes(
+        'An active subscription is required to perform this action.',
+      )
+    ) {
+      toast.error(message, {
+        action: {
+          label: 'Subscribe',
+          onClick: async () => {
+            const url = await createCheckout()
+            window.location.href = url.checkoutUrl
+          },
+        },
+      })
+    } else {
+      toast.error(message)
+    }
+  }
 
   if (isMobile) {
     return (
@@ -40,6 +62,7 @@ const CreateVoiceDialog = ({ open, onOpenChange }: Props) => {
           <CreateVoiceForm
             onSubmit={() => onOpenChange(false)}
             scrollable
+            onError={handleError}
             footer={(submit) => (
               <DrawerFooter>
                 {submit}
@@ -63,7 +86,10 @@ const CreateVoiceDialog = ({ open, onOpenChange }: Props) => {
               library.
             </DialogDescription>
           </DialogHeader>
-          <CreateVoiceForm onSubmit={() => onOpenChange(false)} />
+          <CreateVoiceForm
+            onError={handleError}
+            onSubmit={() => onOpenChange(false)}
+          />
         </DialogContent>
       </Dialog>
     )
